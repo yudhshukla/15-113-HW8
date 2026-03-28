@@ -1,6 +1,8 @@
-Behavior: From the user's perspective, this app will first introduce the functionality (quizzing) to the user, then ask how many questions they'd like to be tested on. Then, the app should randomly select that many questions from its internal question bank. 
+## Behavior: 
+- From the user's perspective, this app will first introduce the functionality (quizzing) to the user, then ask how many questions they'd like to be tested on. Then, the app should randomly select that many questions from its internal question bank. 
 
-Data format:
+## Data format:
+```json
 {
   "questions": [
     {
@@ -45,16 +47,22 @@ Data format:
     }
   ]
 }
+```
 
-File structure: main.py to handle the interactions with the user and logic for showing questions, performance.py to handle creating the secure score history file with relevant statistics, and a JSON file with question bank
+## File structure: 
+- main.py to handle the interactions with the user and logic for showing questions, performance.py to handle creating the secure score history file with relevant statistics, and a JSON file with question bank
 
-Error handling: If the JSON file is missing, display a message to the user and do not crash. If a user inputs invalid questions/syntax into the JSON question bank, similarly display a message. If a user misformats their answer, give them additional chances until they do it correctly. 
+## Error handling: 
+- If the JSON file is missing, display a message to the user and do not crash. If a user inputs invalid questions/syntax into the JSON question bank, similarly display a message. If a user misformats their answer, give them additional chances until they do it correctly. 
 
-Required features: After one round of a quiz, the user must enter a username and a password. This app should have a local login system to manage this. Once logged in, users will be able to access more features, such as information on their performance, the ability to give feedback on whether they liked a question or not (which should influence what kinds of questions they see), and ability for users to modify questions in a human-readable json file. Performance should be tracked in a score history file that is not human-readable. It should also contain any other useful statistics that would help the user study. 
+## Required features: 
+- After one round of a quiz, the user must enter a username and a password. This app should have a local login system to manage this. Once logged in, users will be able to access more features, such as information on their performance, the ability to give feedback on whether they liked a question or not (which should influence what kinds of questions they see), and ability for users to modify questions in a human-readable json file. Performance should be tracked in a score history file that is not human-readable. It should also contain any other useful statistics that would help the user study. 
 
-Extension feature: Additionally, users should be able to add difficulty tags to questions so that when they ask for questions to be quizzed on, they can filter by questions of a certain difficulty. This difficulty should affect their proficiency score, which should be calculated in the score history/performance file. 
+## Extension feature: 
+- Additionally, users should be able to add difficulty tags to questions so that when they ask for questions to be quizzed on, they can filter by questions of a certain difficulty. This difficulty should affect their proficiency score, which should be calculated in the score history/performance file. 
 
-Acceptance criteria: To check if this implementation is completed and successful, the following criteria must be met:
+## Acceptance criteria: 
+- To check if this implementation is completed and successful, the following criteria must be met:
 
 - 1. User is introduced to the app and allowed to test out a few questions
 - 2. Then, the user is prompted to enter a username and password or to register. This system must be robust and make use of a local login system.
