@@ -7,6 +7,7 @@ import getpass
 import hashlib
 import binascii
 from pathlib import Path
+from collections import defaultdict
 from performance import record_result, user_stats, load_store, save_store
 
 BASE = Path(__file__).parent
@@ -25,6 +26,12 @@ def load_questions(path=QUESTIONS_FILE):
         if not isinstance(qs, list):
             print('Question file is misformatted (expected top-level "questions" array).')
             return []
+        # Validate each question has required fields
+        for q in qs:
+            if not q.get('id'):
+                print(f'Warning: Question missing "id" field: {q.get("question", "(no text)")[:30]}...')
+            if not q.get('difficulty'):
+                print(f'Warning: Question {q.get("id", "?")} missing "difficulty" field')
         return qs
     except json.JSONDecodeError:
         print('Question file contains invalid JSON.')
@@ -149,11 +156,57 @@ def present_question(q):
         return ans
 
 
+def build_user_preferences(username):
+    """Build user preference dict based on their feedback history."""
+    data = load_store()
+    history = [h for h in data.get('history', []) if h.get('user') == username]
+    
+    prefs = {}
+    difficulty_feedback = defaultdict(lambda: {'likes': 0, 'dislikes': 0})
+    
+    for h in history:
+        feedback = h.get('feedback')
+        difficulty = h.get('difficulty', 'Unknown')
+        
+        if feedback == 'like':
+            difficulty_feedback[difficulty]['likes'] += 1
+        elif feedback == 'dislike':
+            difficulty_feedback[difficulty]['dislikes'] += 1
+    
+    # Calculate preference score for each difficulty
+    # positive = user prefers this difficulty, negative = user dislikes
+    for difficulty, counts in difficulty_feedback.items():
+        total = counts['likes'] + counts['dislikes']
+        if total > 0:
+            # Score: (likes - dislikes) / total, scaled for reasonable weighting
+            prefs[difficulty] = (counts['likes'] - counts['dislikes']) / total * 0.5
+        else:
+            prefs[difficulty] = 0
+    
+    return prefs
+
+
+def filter_by_difficulty(questions, difficulty):
+    """Helper function to filter questions by difficulty level."""
+    if not difficulty:
+        return questions[:]
+    df = str(difficulty).strip().lower()
+    return [q for q in questions if str(q.get('difficulty', '')).strip().lower() == df]
+
+
 def start_quiz():
     qs = load_questions()
     if not qs:
         print('No questions available. Please ensure questions.json exists and is valid.')
         return
+    
+    # Optional login for personalized selection based on feedback history
+    user = None
+    print('\nTo get questions tailored to your preferences based on past feedback, you can log in.')
+    choice = input('Log in for personalized selection? (y/n): ').strip().lower()
+    if choice == 'y':
+        user = login_user()
+    
     while True:
         try:
             raw = input("How many questions would you like? (enter 0 to cancel): ").strip()
@@ -175,18 +228,21 @@ def start_quiz():
     if diff == '':
         diff = None
     # determine pool and validate requested count
-    if diff:
-        df = str(diff).strip().lower()
-        pool = [q for q in qs if str(q.get('difficulty', '')).strip().lower() == df]
-    else:
-        pool = qs[:]
+    pool = filter_by_difficulty(qs, diff)
     if not pool:
         print('No questions match that filter.')
         return
     if num > len(pool):
         print(f'Requested {num} questions but only {len(pool)} available for that filter.')
         return
+    
+    # Build user preferences from their feedback history if logged in
     user_prefs = {}
+    if user:
+        user_prefs = build_user_preferences(user)
+        if user_prefs:
+            print('Personalizing question selection based on your feedback...')
+    
     selected = select_questions(qs, num, difficulty_filter=diff, user_prefs=user_prefs)
     correct_count = 0
     answers = []
@@ -209,20 +265,22 @@ def start_quiz():
 
     print(f'You answered {correct_count} out of {len(selected)} correctly.')
 
-    print('\nPlease login or register to save your performance and access features.')
-    while True:
-        choice = input('Enter L to login, R to register: ').strip().upper()
-        if choice == 'L':
-            user = login_user()
-            if user:
+    # If not logged in yet, prompt to login/register to save results
+    if not user:
+        print('\nPlease login or register to save your performance and access features.')
+        while True:
+            choice = input('Enter L to login, R to register: ').strip().upper()
+            if choice == 'L':
+                user = login_user()
+                if user:
+                    break
+                else:
+                    continue
+            elif choice == 'R':
+                user = register_user()
                 break
             else:
-                continue
-        elif choice == 'R':
-            user = register_user()
-            break
-        else:
-            print('Enter L or R')
+                print('Enter L or R')
 
     for q, correct, feedback in answers:
         record_result(user, q.get('id'), q.get('difficulty'), correct, feedback)
@@ -261,10 +319,7 @@ def ask_feedback():
 
 
 def select_questions(qs, count, difficulty_filter=None, user_prefs=None):
-    pool = qs[:]
-    if difficulty_filter:
-        df = str(difficulty_filter).strip().lower()
-        pool = [q for q in pool if str(q.get('difficulty', '')).strip().lower() == df]
+    pool = filter_by_difficulty(qs, difficulty_filter)
     if not pool:
         return []
     # weight by user_prefs (preferences by difficulty)
@@ -283,24 +338,96 @@ def select_questions(qs, count, difficulty_filter=None, user_prefs=None):
     # Use random.choices to allow weighting, then ensure uniqueness by sampling without replacement if needed
     try:
         chosen = random.choices(pool, weights=weights, k=count)
-        # make unique while preserving order
+        # make unique while preserving order (crashes if 'id' missing, so use .get())
         seen = set()
         uniq = []
         for q in chosen:
-            if q['id'] not in seen:
+            q_id = q.get('id')
+            if q_id and q_id not in seen:
                 uniq.append(q)
-                seen.add(q['id'])
+                seen.add(q_id)
         # if duplicates removed and we have fewer than requested, fill from remaining
         if len(uniq) < count:
-            remaining = [q for q in pool if q['id'] not in seen]
+            remaining = [q for q in pool if q.get('id') not in seen]
             while len(uniq) < count and remaining:
                 extra = random.choice(remaining)
                 uniq.append(extra)
-                remaining = [q for q in remaining if q['id'] != extra['id']]
+                remaining = [q for q in remaining if q.get('id') != extra.get('id')]
         return uniq[:count]
-    except Exception:
-        # fallback to simple random.sample if weighting fails for any reason
-        return random.sample(pool, count)
+    except Exception as e:
+        # fallback to simple random.sample if weighting fails (e.g., weights sum to 0)
+        # This degrades gracefully when preference weighting cannot be applied
+        return random.sample(pool, min(count, len(pool)))
+
+
+def edit_questions():
+    """Allow users to edit questions in the question bank."""
+    qs = load_questions()
+    if not qs:
+        print('No questions available.')
+        return
+    
+    print('\nAvailable questions:')
+    for q in qs:
+        q_id = q.get('id', '?')
+        q_text = q.get('question', '(no text)')[:50]
+        print(f"  [{q_id}] {q_text}...")
+    
+    # Select question to edit
+    while True:
+        q_id_input = input('\nEnter question ID to edit (or q to cancel): ').strip()
+        if q_id_input.lower() in ('q', 'quit'):
+            return
+        try:
+            q_id = int(q_id_input)
+            break
+        except ValueError:
+            print('Please enter a valid ID.')
+    
+    # Find question
+    target = None
+    idx = None
+    for i, q in enumerate(qs):
+        if q.get('id') == q_id:
+            target = q
+            idx = i
+            break
+    
+    if target is None:
+        print('Question not found.')
+        return
+    
+    # Display current question
+    print('\nCurrent question:')
+    for key in ['id', 'question', 'type', 'options', 'answer', 'category', 'difficulty']:
+        print(f"  {key}: {target.get(key)}")
+    
+    # Allow editing
+    while True:
+        field = input('\nEdit which field? (question/type/options/answer/category/difficulty/done): ').strip().lower()
+        if field == 'done':
+            break
+        if field not in ['question', 'type', 'options', 'answer', 'category', 'difficulty']:
+            print('Invalid field.')
+            continue
+        
+        new_val = input(f'New value for {field}: ').strip()
+        
+        if field == 'options':
+            # Parse options as comma-separated
+            target[field] = [o.strip() for o in new_val.split(',')]
+        else:
+            target[field] = new_val
+        print(f'{field} updated.')
+    
+    # Save
+    qs[idx] = target
+    try:
+        with open(QUESTIONS_FILE, 'w', encoding='utf-8') as f:
+            json.dump({'questions': qs}, f, indent=2)
+        print('\nQuestion saved successfully.')
+    except Exception as e:
+        print(f'Error saving questions: {e}')
 
 
 def main():
@@ -311,17 +438,20 @@ def main():
         print('\nMenu:')
         print('  1) Start Quiz')
         print('  2) View Performance')
-        print('  3) Quit')
-        choice = input('Select an option (1/2/3): ').strip().lower()
+        print('  3) Edit Questions')
+        print('  4) Quit')
+        choice = input('Select an option (1/2/3/4 or start/view/edit/quit): ').strip().lower()
         if choice in ('1', 'start', 's'):
             start_quiz()
         elif choice in ('2', 'view', 'v'):
             view_performance()
-        elif choice in ('3', 'quit', 'q', 'exit'):
+        elif choice in ('3', 'edit', 'e'):
+            edit_questions()
+        elif choice in ('4', 'quit', 'q', 'exit'):
             print('Goodbye')
             return
         else:
-            print('Enter 1, 2, or 3')
+            print('Enter 1, 2, 3, 4 or start/view/edit/quit')
 
 
 if __name__ == '__main__':
