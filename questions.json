@@ -1,0 +1,319 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the efficiency of checking membership in a set in Python",
+      "type": "multiple_choice",
+      "options": ["O(n)", "O(n^2)", "O(log n)", "O(1)"],
+      "answer": "O(1)",
+      "category": "Efficiency",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 2,
+      "question": "How many passes will selection sort make on a list of length 8?",
+      "type": "multiple_choice",
+      "options": ["80", "1", "8", "3"],
+      "answer": "8",
+      "category": "Efficiency",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 3,
+      "question": "How many passes will merge sort make on a list of length 8?",
+      "type": "multiple_choice",
+      "options": ["80", "1", "8", "3"],
+      "answer": "3",
+      "category": "Efficiency",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 4,
+      "question": "If on a given computer, a function that runs in O(N) takes 10 seconds to run on a list with 1000 values, roughly how long will it take to run on the same computer for a list with 5000 values?",
+      "type": "multiple_choice",
+      "options": ["50 seconds", "10 seconds", "20 seconds", "2500 seconds"],
+      "answer": "50 seconds",
+      "category": "Efficiency",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 5,
+      "question": "What is the maximum number of indices that binary search would need to access when run on a list of length 64?",
+      "type": "multiple_choice",
+      "options": ["16", "8", "6", "4"],
+      "answer": "6",
+      "category": "Efficiency",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 6,
+      "question": "Which data structure uses FIFO ordering?",
+      "type": "multiple_choice",
+      "options": ["Stack", "Queue", "Tree", "Graph"],
+      "answer": "Queue",
+      "category": "Data Structures",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 7,
+      "question": "Which Python keyword is used to define a function?",
+      "type": "multiple_choice",
+      "options": ["func", "def", "function", "lambda"],
+      "answer": "def",
+      "category": "Python",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 8,
+      "question": "What is the worst-case time complexity of quicksort (naive pivot choice)?",
+      "type": "multiple_choice",
+      "options": ["O(n log n)", "O(n)", "O(n^2)", "O(log n)"],
+      "answer": "O(n^2)",
+      "category": "Sorting",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 9,
+      "question": "Which traversal of a binary tree visits nodes in left-root-right order?",
+      "type": "multiple_choice",
+      "options": ["Pre-order", "In-order", "Post-order", "Level-order"],
+      "answer": "In-order",
+      "category": "Trees",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 10,
+      "question": "Which algorithm is typically used to find the shortest path in a weighted graph with nonnegative weights?",
+      "type": "multiple_choice",
+      "options": ["Bellman-Ford", "Dijkstra's algorithm", "Kruskal's algorithm", "Prim's algorithm"],
+      "answer": "Dijkstra's algorithm",
+      "category": "Graphs",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 11,
+      "question": "What data structure does a breadth-first search use to track the frontier?",
+      "type": "multiple_choice",
+      "options": ["Stack", "Queue", "Priority queue", "Set"],
+      "answer": "Queue",
+      "category": "Algorithms",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 12,
+      "question": "Which Python built-in type is immutable?",
+      "type": "multiple_choice",
+      "options": ["list", "dict", "set", "tuple"],
+      "answer": "tuple",
+      "category": "Python",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 13,
+      "question": "What is the space complexity of storing an adjacency matrix for a graph with n nodes?",
+      "type": "multiple_choice",
+      "options": ["O(n)", "O(n log n)", "O(n^2)", "O(1)"],
+      "answer": "O(n^2)",
+      "category": "Graphs",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 14,
+      "question": "Which sorting algorithm is stable by default?",
+      "type": "multiple_choice",
+      "options": ["Quick sort", "Heap sort", "Merge sort", "Selection sort"],
+      "answer": "Merge sort",
+      "category": "Sorting",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 15,
+      "question": "In big-O notation, which of these grows the slowest as n increases?",
+      "type": "multiple_choice",
+      "options": ["O(n)", "O(n log n)", "O(n^2)", "O(log n)"],
+      "answer": "O(log n)",
+      "category": "Complexity",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 16,
+      "question": "What does SQL stand for?",
+      "type": "multiple_choice",
+      "options": ["Structured Query Language", "Simple Query Language", "Sequential Query Language", "Structured Question Language"],
+      "answer": "Structured Query Language",
+      "category": "Databases",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 17,
+      "question": "Which data structure gives average O(1) time for insert, delete, and lookup?",
+      "type": "multiple_choice",
+      "options": ["List", "Dictionary/Hash map", "Binary search tree", "Heap"],
+      "answer": "Dictionary/Hash map",
+      "category": "Data Structures",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 18,
+      "question": "Which algorithm technique breaks a problem into overlapping subproblems and stores results?",
+      "type": "multiple_choice",
+      "options": ["Divide and conquer", "Greedy", "Dynamic programming", "Backtracking"],
+      "answer": "Dynamic programming",
+      "category": "Algorithms",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 19,
+      "question": "What is tail recursion?",
+      "type": "multiple_choice",
+      "options": ["A recursion where the recursive call is the last operation", "A recursion that returns multiple values", "A recursion that uses global variables", "A recursion with two recursive calls"],
+      "answer": "A recursion where the recursive call is the last operation",
+      "category": "Recursion",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 20,
+      "question": "Which HTTP method is typically used to retrieve data without side effects?",
+      "type": "multiple_choice",
+      "options": ["POST", "PUT", "GET", "DELETE"],
+      "answer": "GET",
+      "category": "Web",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 21,
+      "question": "What does ACID stand for in databases?",
+      "type": "multiple_choice",
+      "options": ["Atomicity, Consistency, Isolation, Durability", "Availability, Consistency, Isolation, Durability", "Atomicity, Concurrency, Isolation, Durability", "Authenticity, Consistency, Integrity, Durability"],
+      "answer": "Atomicity, Consistency, Isolation, Durability",
+      "category": "Databases",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 22,
+      "question": "Which of these is NOT a stable sorting algorithm?",
+      "type": "multiple_choice",
+      "options": ["Insertion sort", "Merge sort", "Quick sort", "Bubble sort"],
+      "answer": "Quick sort",
+      "category": "Sorting",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 23,
+      "question": "What is the amortized time complexity of appending to a dynamic array (e.g., Python list)?",
+      "type": "multiple_choice",
+      "options": ["O(1)", "O(n)", "O(log n)", "O(n log n)"],
+      "answer": "O(1)",
+      "category": "Data Structures",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 24,
+      "question": "Which structure is most appropriate to implement a LIFO policy?",
+      "type": "multiple_choice",
+      "options": ["Queue", "Stack", "Heap", "Graph"],
+      "answer": "Stack",
+      "category": "Data Structures",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 25,
+      "question": "Which algorithm finds a minimum spanning tree?",
+      "type": "multiple_choice",
+      "options": ["Dijkstra", "Bellman-Ford", "Kruskal", "Floyd-Warshall"],
+      "answer": "Kruskal",
+      "category": "Graphs",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 26,
+      "question": "In Python, which statement is used to handle exceptions?",
+      "type": "multiple_choice",
+      "options": ["try/except", "if/else", "switch/case", "handle/catch"],
+      "answer": "try/except",
+      "category": "Python",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 27,
+      "question": "Which complexity class describes problems solvable in polynomial time?",
+      "type": "multiple_choice",
+      "options": ["P", "NP", "EXP", "LOG"],
+      "answer": "P",
+      "category": "Complexity",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 28,
+      "question": "Which of these is a characteristic of a hash table?",
+      "type": "multiple_choice",
+      "options": ["Ordered traversal", "Constant-time average lookup", "Guaranteed sorted keys", "Tree-like structure"],
+      "answer": "Constant-time average lookup",
+      "category": "Data Structures",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 29,
+      "question": "Which technique can be used to avoid recomputing values in dynamic programming?",
+      "type": "multiple_choice",
+      "options": ["Memoization", "Greedy choice", "Backtracking", "Brute force"],
+      "answer": "Memoization",
+      "category": "Algorithms",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 30,
+      "question": "Which data structure is best for implementing a priority scheduler?",
+      "type": "multiple_choice",
+      "options": ["Queue", "Heap / Priority Queue", "Linked List", "Hash Map"],
+      "answer": "Heap / Priority Queue",
+      "category": "Data Structures",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 31,
+      "question": "In recursion, what is the base case?",
+      "type": "multiple_choice",
+      "options": ["The largest input", "The stopping condition that returns without recursion", "A case that calls recursion twice", "A case that raises an error"],
+      "answer": "The stopping condition that returns without recursion",
+      "category": "Recursion",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 32,
+      "question": "Which of these is NOT a primary key property in a relational database?",
+      "type": "multiple_choice",
+      "options": ["Uniqueness", "Non-null", "Mutable frequently", "Immutable identifier"],
+      "answer": "Mutable frequently",
+      "category": "Databases",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 33,
+      "question": "Which method in Python lists removes and returns the last element?",
+      "type": "multiple_choice",
+      "options": ["pop()", "remove()", "delete()", "discard()"],
+      "answer": "pop()",
+      "category": "Python",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 34,
+      "question": "What is the main advantage of adjacency lists over adjacency matrices for sparse graphs?",
+      "type": "multiple_choice",
+      "options": ["Faster edge lookup always", "Lower memory usage for sparse graphs", "Guaranteed O(1) memory", "Simpler to implement for dense graphs"],
+      "answer": "Lower memory usage for sparse graphs",
+      "category": "Graphs",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 35,
+      "question": "Which of the following best describes a stable sort?",
+      "type": "multiple_choice",
+      "options": ["It runs in O(n) time", "It preserves the relative order of equal elements", "It uses constant extra space", "It always uses swapping only"],
+      "answer": "It preserves the relative order of equal elements",
+      "category": "Sorting",
+      "difficulty": "Easy"
+    }
+  ]
+}
